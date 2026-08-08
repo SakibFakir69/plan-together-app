@@ -4,78 +4,20 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Dimensions,
+ 
   ViewToken,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
+import { handleSkip } from '@/navigation/onboarding/navigation.onboarding'
+import { SlideItem,Slide } from '@/components/onboarding/slide-items'
+import { PaginationDots } from '@/components/onboarding/pagination-dot'
+import { SLIDES } from '@/constants/onboarding/constant-onboarding'
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
-type Slide = {
-  id: string
-  icon: string
-  title: string
-  subtitle: string
-}
 
-const SLIDES: Slide[] = [
-  {
-    id: '1',
-    icon: '👨‍👩‍👧',
-    title: 'Plan Together',
-    subtitle:
-      'Harmonize your household. Sync schedules and manage domestic life as a team.',
-  },
-  {
-    id: '2',
-    icon: '✅',
-    title: 'Delegate With Ease',
-    subtitle:
-      'Assign tasks to each family member and track progress without the nagging.',
-  },
-  {
-    id: '3',
-    icon: '🔔',
-    title: 'Stay in Sync, Always',
-    subtitle:
-      'Smart reminders keep everyone on track. Never miss what matters most.',
-  },
-]
 
-function SlideItem({ item }: { item: Slide }) {
-  return (
-    <View
-      style={{ width: SCREEN_WIDTH }}
-      className="flex-1 items-center justify-center px-6"
-    >
-      {/* Outer glow ring */}
-      <View className="w-72 h-72 rounded-full bg-[#EDE9FE]/40 items-center justify-center">
-        {/* Inner circle — matches splash screen icon treatment */}
-        <View className="w-52 h-52 rounded-full bg-[#EDE9FE] items-center justify-center">
-          <Text style={{ fontSize: 88 }}>{item.icon}</Text>
-        </View>
-      </View>
-    </View>
-  )
-}
 
-function PaginationDots({ total, active }: { total: number; active: number }) {
-  return (
-    <View className="flex-row items-center justify-center gap-2 my-7">
-      {Array.from({ length: total }).map((_, i) => (
-        <View
-          key={i}
-          className={
-            i === active
-              ? 'h-2.5 w-7 rounded-full bg-[#4F46E5]'   // pill — active
-              : 'h-2.5 w-2.5 rounded-full bg-[#D1D5DB]'  // circle — inactive
-          }
-        />
-      ))}
-    </View>
-  )
-}
 
 export default function OnboardingScreen() {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -95,18 +37,18 @@ export default function OnboardingScreen() {
 
   const handleNext = () => {
     if (isLast) {
-      router.replace('/(auth)/sign-up/page')
+      router.replace('/sign-up')
       return
     }
     listRef.current?.scrollToIndex({ index: activeIndex + 1, animated: true })
   }
 
-  const handleSkip = () => router.replace('/(auth)/sign-in/page')
+  
 
   return (
     <SafeAreaView className="flex-1 bg-[#F5F3FF]">
       {/* Skip — hidden on last slide, user is already at end */}
-      <View className="h-11 px-6 flex-row justify-end items-center">
+      <View className="flex-row items-center justify-end px-6 h-11">
         {!isLast && (
           <TouchableOpacity onPress={handleSkip} activeOpacity={0.7} hitSlop={12}>
             <Text className="text-[#6B7280] text-base font-medium">Skip</Text>
@@ -145,7 +87,7 @@ export default function OnboardingScreen() {
           activeOpacity={0.85}
           className="bg-[#4F46E5] rounded-2xl h-14 items-center justify-center flex-row gap-2"
         >
-          <Text className="text-white text-lg font-semibold">
+          <Text className="text-lg font-semibold text-white">
             {isLast ? 'Get Started' : `Next  →`}
           </Text>
         </TouchableOpacity>
