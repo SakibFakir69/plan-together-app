@@ -1,4 +1,4 @@
 @AGENTS.md
 
 
-1. use nativeWind fot style
+1. before start read memory
