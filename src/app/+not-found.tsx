@@ -1,5 +1,5 @@
-// app/+not-found.tsx
-import { View, Text, Pressable } from "react-native";
+
+import { View, Text,  Pressable} from "react-native";
 import { Link, Stack, router } from "expo-router";
 
 export default function NotFoundScreen() {
